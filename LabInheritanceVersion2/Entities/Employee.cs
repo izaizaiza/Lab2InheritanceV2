@@ -43,5 +43,14 @@ namespace LabInheritanceVersion2.Entities
             Address= theaddress;
             string phone = thephone;
         }
+
+        // methods
+        //Fill a list with objects based on the supplied data file.
+        //Calculate and return the average weekly pay for all employees.
+        //Calculate and return the highest weekly pay for the wage employees, including the name of the employee.
+        //Calculate and return the lowest salary for the salaried employees, including the name of the employee.
+
+        //What percentage of the company’s employees fall into each employee category?
+
     }
 }

@@ -13,65 +13,48 @@ namespace LabInheritanceVersion2
     {
         static void Main(string[] args)
         {
-            List<Employee> employees = new List<Employee>();
             
             // for some reason the default looks for the txt file inside the Debug folder
             // ==> added a copy of the txt file there
             string path = "employees.txt";
-            
 
-            string[] lines = File.ReadAllLines(path);
+            // a. Fill a list with objects based on the supplied data file.
+            List<Employee> employees = Employee.CreateList(path);
 
-            foreach (string line in lines)
+            // make a sublist of employees
+            List<Salaried> salariedEmployees = new List<Salaried>();
+            List<PartTime> partTimeEmployees = new List<PartTime>();
+            List<Wages> wagesEmployees = new List<Wages>();
+
+            foreach (Employee employee in employees)
             {
-                string[] cells = line.Split(':');
-
-                string id = cells[0];
-                string name = cells[1];
-                string address = cells[2];
-
-                // get the id and its first digit
-                string firstDigit = id.Substring(0, 1);
-
-                int firstDigitInt = int.Parse(firstDigit);
-
-                if (firstDigitInt >= 0 && firstDigitInt <= 4)
+                string idString = employee.ID.ToString().Substring(0,1);
+                int firstDigit = int.Parse(idString);
+                if (firstDigit>=0 && firstDigit<=4)
                 {
-                    // salaried
-                    string salary = cells[7];
-
-                    double salaryDouble = double.Parse(salary);
-                    Salaried salaried = new Salaried(id, name, address, salaryDouble);
-                    employees.Add(salaried);
+                    // add the employee to the salaried sublist
                 }
-                else if (firstDigitInt >= 5 && firstDigitInt <= 7)
-                {
-                    // wage
-                    string rate = cells[7];
-                    string hours = cells[8];
-                }
-                else if (firstDigitInt >= 8 && firstDigitInt <= 9)
-                {
-                    //part-time
-                    string rate = cells[7];
-                    string hours = cells[8];
-
-                    double rateDouble = double.Parse(rate);
-                    PartTime parttime = new PartTime(id, name, address, rateDouble);
-                    employees.Add(parttime);
-                }
-
-                
-         
-
-            }// end of foreach loop
-
-            //some che3cking
-
-            foreach(Employee employee in employees)
-            {
-                Console.WriteLine(employee.Name);
             }
+            // should i just do this in the CreateList method?
+            // and return a list of list(s)?
+
+            // b. Calculate and return the average weekly pay for all employees.
+
+
+            // c. Calculate and return the highest weekly pay for the wage employees,
+            //including the name of the employee
+
+
+
+            // d. Calculate and return the lowest salary for the salaried employees,
+            // including their name.
+
+
+            Salaried.FindLowestPaid(salariedEmployees);
+
+
+            // e. what percentage of the company's employees fall into each employee
+            // category?
 
 
         }//end of main

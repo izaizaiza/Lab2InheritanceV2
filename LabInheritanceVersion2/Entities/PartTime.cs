@@ -37,5 +37,10 @@ namespace LabInheritanceVersion2.Entities
             string phone = thephone;
             long sin = thesin;
         }
-    }
+
+
+        //methods
+
+        
+    }//end of PartTime Class
 }

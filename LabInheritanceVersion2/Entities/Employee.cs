@@ -261,7 +261,7 @@ namespace LabInheritanceVersion2.Entities
 
             return salariedName + " is the lowest paid salaried employee with a weekly pay of $" + lowestSalary;
         }
-
+        //checking gitHub
 
 
         //What percentage of the company’s employees fall into each employee category?

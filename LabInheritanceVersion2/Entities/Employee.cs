@@ -54,9 +54,12 @@ namespace LabInheritanceVersion2.Entities
         /// </summary>
         public static List<Employee> CreateList(string filePath)
         {
-            //create empty list to add in all people in the file 
+            //create empty list to add in all people in the file
             List<Employee> employeesList = new List<Employee>();
-            
+
+
+         
+
             //put file into a string array so that each string can be further split into 
             //the field values we want. e.g. id, name, addres,...
             string[]  fileArray = File.ReadAllLines(filePath);
@@ -90,9 +93,11 @@ namespace LabInheritanceVersion2.Entities
                     string salary = fieldValues[7];
                     double salaryDouble = double.Parse(salary);
 
-                    // create current line info  to a salaried employee
+                    // create a new salary employee using the current line info
                     Salaried salariedEmployee = new Salaried(currentId, currentName, currentAddress, salaryDouble);
                     employeesList.Add(salariedEmployee);
+                    
+
                     
                 }
                 else if (idDigit >= 5 && idDigit <= 7)
@@ -101,8 +106,11 @@ namespace LabInheritanceVersion2.Entities
                     string rate = fieldValues[7];
                     string hours = fieldValues[8];
                     double rateDouble = double.Parse(rate);
-                    PartTime waged = new PartTime(currentId, currentName, currentAddress, rateDouble);
+                    double hoursDouble = double.Parse(hours);
+
+                    Wages waged = new Wages(currentId, currentName, currentAddress, rateDouble, hoursDouble); //
                     employeesList.Add(waged);
+                    
 
                 }
                 else if (idDigit >= 8 && idDigit <= 9)
@@ -112,18 +120,22 @@ namespace LabInheritanceVersion2.Entities
                     string hours = fieldValues[8];
 
                     double rateDouble = double.Parse(rate);
-                    PartTime partTime = new PartTime(currentId, currentName, currentAddress, rateDouble);
+                    double hoursDouble = double.Parse(hours);
+
+                    PartTime partTime = new PartTime(currentId, currentName, currentAddress, rateDouble, hoursDouble);
                     employeesList.Add(partTime);
+                    
                 }
+
 
             }// end of foreach loop
 
-            // test:
+            // test to see if each employee has the corresponding employee class (salaried, parttime, wages):
             //foreach(Employee employee in employeesList)
             //{
             //    Console.WriteLine(employee.ID + " " + employee.Name+ " " + employee.Address);
+            //    Console.WriteLine(employee.GetType());
             //}
-
 
             return employeesList;
         }//end of CreateList method
@@ -133,11 +145,124 @@ namespace LabInheritanceVersion2.Entities
         //Calculate and return the average weekly pay for all employees.
         public static double ComputeAveWeeklyPay(List<Employee> list)
         {
-            double aveWeeklyPay=0;
+            double aveWeeklyPay;
+            double accumWeeklyPay=0;
+            foreach (Employee employee in list)
+            {
+                if (employee is Salaried)
+                {
+                    //convert back to salary class to access Salary property
+                    Salaried salariedEmployee = (Salaried)employee;
+
+                    accumWeeklyPay += salariedEmployee.Salary;
+                }
+                else if (employee is Wages)
+                {
+                    // convert back to Wages class to access rate and hours
+                    Wages wageEmployee = (Wages)employee;
+
+                    if (wageEmployee.Hours < 40)
+                    {
+                        accumWeeklyPay += (wageEmployee.Rate* wageEmployee.Hours);
+                    }
+                    else
+                    {
+                        // 2 parts of computation: 1, compute the pay of the hours less than 40. 2, compute the overtime and then add together
+                        accumWeeklyPay += ((wageEmployee.Rate * 40) + (wageEmployee.Rate * 1.5 * (wageEmployee.Hours-40)) ) ;
+                    }
+                    
+                }
+                else
+                {
+                    PartTime partTimeEmployee = (PartTime)employee;
+                    // part timers do not have overtime pay so 
+                    accumWeeklyPay += (partTimeEmployee.Rate * partTimeEmployee.Hours);
+                }
+
+            }// end of foreach loop
+
+            aveWeeklyPay = accumWeeklyPay / list.Count;
             return aveWeeklyPay;
-        }
+        }// end of ComputeAveWeeklyPay
+
+
         //Calculate and return the highest weekly pay for the wage employees, including the name of the employee.
+        public static string WagedHighestPaid(List<Employee> list)
+        {
+            double highestWeeklyPay = 0;
+            double weeklyPay;
+            string wagedName = "name";
+
+            foreach (Employee employee in list)
+            {
+                if (employee is Wages)
+                {
+                    // turn employee to Wages class to access hours and rate
+                    Wages wageEmployee = (Wages)employee; 
+                    
+                    //first determine weekly pay of this employee
+                    if (wageEmployee.Hours < 40)
+                    {
+                        weeklyPay = (wageEmployee.Rate * wageEmployee.Hours);
+                    }
+                    else
+                    {
+                        // 2 parts of computation: 1, compute the pay of the hours less than 40. 2, compute the overtime and then add together
+                        weeklyPay = (wageEmployee.Rate * 40) + (wageEmployee.Rate * 1.5 * (wageEmployee.Hours - 40));
+                    }
+
+                    //compare weeklypay to minWeeklyPay
+                    if(weeklyPay > highestWeeklyPay)
+                    {
+                        highestWeeklyPay = weeklyPay;
+                        wagedName= wageEmployee.Name;
+                    }
+
+
+                }
+            }
+            return wagedName + " is the highest paid waged employee with a weekly pay of $" + highestWeeklyPay;
+        }
+
+
         //Calculate and return the lowest salary for the salaried employees, including the name of the employee.
+        public static string SalariedLowestPaid(List<Employee> list)
+        {
+            double lowestSalary;
+            string salariedName;
+
+            // make a list for salary and a corresponding list for who it belongs to
+            List<double> salariesList = new List<double>();
+            List<string> salariedNamesList = new List<string>();
+
+            foreach (Employee employee in list)
+            {
+                if (employee is Salaried)
+                {
+                    // turn employee to Salaried class to access salary
+                    Salaried salariedEmployee = (Salaried)employee;
+                    salariesList.Add(salariedEmployee.Salary);
+                    salariedNamesList.Add(salariedEmployee.Name);
+                    
+                }
+            }
+
+            // compare the salariesList values
+            lowestSalary = salariesList[0];
+            salariedName = salariedNamesList[0];
+            for (int i=0; i<salariesList.Count; i++)
+            {
+                if (salariesList[i] < lowestSalary)
+                {
+                    lowestSalary= salariesList[i];
+                    salariedName= salariedNamesList[i];
+                }
+            }
+
+            return salariedName + " is the lowest paid salaried employee with a weekly pay of $" + lowestSalary;
+        }
+
+
 
         //What percentage of the company’s employees fall into each employee category?
 

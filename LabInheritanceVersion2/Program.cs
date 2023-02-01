@@ -21,36 +21,19 @@ namespace LabInheritanceVersion2
             // a. Fill a list with objects based on the supplied data file.
             List<Employee> employees = Employee.CreateList(path);
 
-            // make a sublist of employees
-            List<Salaried> salariedEmployees = new List<Salaried>();
-            List<PartTime> partTimeEmployees = new List<PartTime>();
-            List<Wages> wagesEmployees = new List<Wages>();
-
-            foreach (Employee employee in employees)
-            {
-                string idString = employee.ID.ToString().Substring(0,1);
-                int firstDigit = int.Parse(idString);
-                if (firstDigit>=0 && firstDigit<=4)
-                {
-                    // add the employee to the salaried sublist
-                }
-            }
-            // should i just do this in the CreateList method?
-            // and return a list of list(s)?
 
             // b. Calculate and return the average weekly pay for all employees.
+            Console.WriteLine(Employee.ComputeAveWeeklyPay(employees));
 
 
             // c. Calculate and return the highest weekly pay for the wage employees,
             //including the name of the employee
-
+            Console.WriteLine(Employee.WagedHighestPaid(employees));
 
 
             // d. Calculate and return the lowest salary for the salaried employees,
             // including their name.
-
-
-            Salaried.FindLowestPaid(salariedEmployees);
+            Console.WriteLine(Employee.SalariedLowestPaid(employees));
 
 
             // e. what percentage of the company's employees fall into each employee

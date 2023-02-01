@@ -10,6 +10,7 @@ namespace LabInheritanceVersion2.Entities
     {
         //field
         private double rate;
+        private double hours;
 
         //properties
         public double Rate
@@ -18,9 +19,22 @@ namespace LabInheritanceVersion2.Entities
             set { rate = value; }
         }
 
+        public double Hours
+        {
+            get { return hours; }
+            set { hours = value; }
+        }
+
 
         //constructors
-        public Wages() { }
+        public Wages(string theid, string thename, string theaddress, double therate, double thehours) 
+        {
+            ID = theid;
+            Name = thename;
+            Address = theaddress;
+            Rate = therate;
+            Hours = thehours;
+        }
 
         public Wages(string theid, string thename, string theaddress, string thephone, long thesin)
         {
@@ -30,5 +44,8 @@ namespace LabInheritanceVersion2.Entities
             string phone = thephone;
             long sin = thesin;
         }
+
+        //methods
+        
     }
 }

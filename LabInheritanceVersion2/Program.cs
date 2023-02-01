@@ -38,6 +38,7 @@ namespace LabInheritanceVersion2
 
             // e. what percentage of the company's employees fall into each employee
             // category?
+            Console.WriteLine(Employee.EmployeePercentage(employees));
 
 
         }//end of main

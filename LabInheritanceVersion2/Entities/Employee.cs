@@ -143,7 +143,7 @@ namespace LabInheritanceVersion2.Entities
 
 
         //Calculate and return the average weekly pay for all employees.
-        public static double ComputeAveWeeklyPay(List<Employee> list)
+        public static string ComputeAveWeeklyPay(List<Employee> list)
         {
             double aveWeeklyPay;
             double accumWeeklyPay=0;
@@ -181,8 +181,8 @@ namespace LabInheritanceVersion2.Entities
 
             }// end of foreach loop
 
-            aveWeeklyPay = accumWeeklyPay / list.Count;
-            return aveWeeklyPay;
+            aveWeeklyPay = Math.Round(accumWeeklyPay / list.Count,2);
+            return String.Format("Average weekly pay of all employees:{0:C2}", aveWeeklyPay); //[0]
         }// end of ComputeAveWeeklyPay
 
 
@@ -221,7 +221,7 @@ namespace LabInheritanceVersion2.Entities
 
                 }
             }
-            return wagedName + " is the highest paid waged employee with a weekly pay of $" + highestWeeklyPay;
+            return wagedName + " is the highest paid waged employee with a weekly pay of $" + Math.Round(highestWeeklyPay, 2);
         }
 
 
@@ -265,6 +265,44 @@ namespace LabInheritanceVersion2.Entities
 
 
         //What percentage of the company’s employees fall into each employee category?
+        public static string EmployeePercentage(List<Employee> list)
+        {
+            double salariedPercentage;
+            double wagesPercentage;
+            double partTimePercentage;
+            double salariedCount = 0;
+            double wagesCount = 0;
+            double partTimeCount = 0;
+            int employeeCount = list.Count();
+            foreach(Employee employee in list)
+            {
+                if (employee is Salaried) 
+                {
+                    salariedCount++;
+                }
+                else if(employee is Wages)
+                {
+                    wagesCount++;
+                }
+                else if(employee is PartTime)
+                {
+                    partTimeCount++;
+                }
+                
+            }//end of foreach
 
+            salariedPercentage = Math.Round((salariedCount/employeeCount)*100, 2);
+            wagesPercentage = Math.Round((wagesCount/employeeCount)*100, 2);
+            partTimePercentage = Math.Round((partTimeCount/employeeCount)*100, 2);
+
+            return "The amount of employee in the list that are, \n" +
+                "Salaried: " + salariedCount + "/" + employeeCount + "(" + salariedPercentage + "%).\n" +
+                "Waged: " + wagesCount + "/" + employeeCount + "(" + wagesPercentage + "%).\n" +
+                "PartTime: " + partTimeCount + "/" + employeeCount + "(" + partTimePercentage + "%).\n";
+        }
+
+        
     }
+    //Refernces
+    // [0] https://www.programiz.com/csharp-programming/library/string/format 
 }

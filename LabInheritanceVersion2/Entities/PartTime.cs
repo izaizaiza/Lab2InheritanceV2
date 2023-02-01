@@ -48,16 +48,6 @@ namespace LabInheritanceVersion2.Entities
 
 
         //methods
-
-        //public static double WeeklyPay(PartTime)
-        //{
-        //    double weeklyPay;
-
-        //    // 2 parts of computation: 1, compute the pay of the hours less than 40. 2, compute the overtime and then add together
-        //    weeklyPay = ((PartTime.Rate *Hours) + (Rate * (Hours - 40) * 1.5));
-        //    return weeklyPay;
-        //}
-
         
     }//end of PartTime Class
 }

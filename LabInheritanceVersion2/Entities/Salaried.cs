@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace LabInheritanceVersion2.Entities
 {
+    /// <summary>
+    ///  this class represents an employee that is paid by salary
+    /// <remarks> Author: Iza Lumpio</remarks>
+    /// <remarks> Date:  Feb 2, 2023 </remarks>
+    /// </summary>
     internal class Salaried : Employee
     {
         //field

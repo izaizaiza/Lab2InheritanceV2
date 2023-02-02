@@ -13,10 +13,18 @@ namespace LabInheritanceVersion2
     {
         static void Main(string[] args)
         {
+            /// <summary>
+            ///  this will serve as the test sight/ implementation
+            ///  area for the the classes in the Entities folder
+            /// <remarks> Author: Iza Lumpio</remarks>
+            /// <remarks> Date:  Feb 2, 2023 </remarks>
+            /// </summary>
+            /// 
+
             
-            // for some reason the default looks for the txt file inside the Debug folder
-            // ==> added a copy of the txt file there
+            //add a copy of the txt file there
             string path = "employees.txt";
+            // for some reason the default looks for the txt file inside the Debug folder
 
             // a. Fill a list with objects based on the supplied data file.
             List<Employee> employees = Employee.CreateList(path);
